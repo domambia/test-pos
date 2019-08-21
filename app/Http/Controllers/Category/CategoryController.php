@@ -129,8 +129,9 @@ class CategoryController extends Controller
         ]);
         if($validate){
             $category->name = $request->name;
-            $category->name = str_slug($request->slug);
+            $category->slug = str_slug($request->name);
             $category->description = $request->description;
+            dd($category->save());
             $saved  = $category->save();
             if($saved){
                 return response()->json([
