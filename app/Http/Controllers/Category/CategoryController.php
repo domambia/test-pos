@@ -18,13 +18,13 @@ class CategoryController extends Controller
         $categories  = Category::all();
         if($categories){
             return response()->json([
-                'message' => 'sucess',
+                'message' => 'Success',
                 'results' => ['categories' => $categories],
                 'status_code' => 200
             ], 200);
         }
         return response()->json([
-            'message' => 'success',
+            'message' => 'Success. No records found',
             'result' => [],
             'status_code' => 200
         ], 200);
@@ -52,11 +52,12 @@ class CategoryController extends Controller
             'name' => 'required',
             'description' => 'required'
         ]);
+
         if($validate){
             $category = Category::create([
                 'name' => $request->name,
                 'slug' => str_slug($request->name),
-                'decription' => $request->description
+                'description' => $request->description
             ]);
             if($category){
                 return response()->json([
@@ -86,7 +87,7 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
-        $category = Category::find($id);
+        $category = Category::where('slug', $slug)->first();
         if($category){
             return response()->json([
                 'message' => 'Successfully found a record',
@@ -121,18 +122,17 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        $category = Category::find($slug);
-        $validate = $request->validate([
-            'name' => $request->name,
-            'description' => $request->description
+        $category = Category::where('slug', $slug)->first();
+        $validate  = $request->validate([
+            'name' => 'required',
+            'description' => 'required'
         ]);
         if($validate){
-            $cat = Category::update([
-                'name' => $request->name,
-                'slug' => str_slug($request->name),
-                'decription' => $request->description
-            ]);
-            if($cat){
+            $category->name = $request->name;
+            $category->name = str_slug($request->slug);
+            $category->description = $request->description;
+            $saved  = $category->save();
+            if($saved){
                 return response()->json([
                     'message' => 'Successfully updated category',
                     'result' => ['category_name' => $request->name],
@@ -160,7 +160,7 @@ class CategoryController extends Controller
      */
     public function destroy($slug)
     {
-        $category = Category::find($slug);
+        $category = Category::where('slug', $slug)->first();
         if($category){
             $category->delete();
             return response()->json([
