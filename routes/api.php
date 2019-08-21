@@ -14,4 +14,18 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/categories/{slug}', 'Category\CategoryController@update');
     Route::delete('/categories/{slug}', 'Category\CategoryController@destroy');
     Route::post('/categories', 'Category\CategoryController@store');
+
+    //product
+    Route::get('/products', 'Product\ProductController@index');
+    Route::get('/products/{slug}', 'Product\ProductController@show');
+    Route::put('/products/{slug}', 'Product\ProductController@update');
+    Route::delete('/products/{slug}', 'Product\ProductController@destroy');
+    Route::post('/products', 'Product\ProductController@store');
+
+    //product
+    Route::get('/transactions', 'Transaction\TransactionController@index');
+    Route::get('/transactions/{slug}', 'Transaction\TransactionController@show');
+    Route::put('/transactions/{slug}', 'Transaction\TransactionController@update');
+    Route::delete('/transactions/{slug}', 'Transaction\TransactionController@destroy');
+    Route::post('/transactions', 'Transaction\TransactionController@store');
 });

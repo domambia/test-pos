@@ -131,7 +131,6 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = str_slug($request->name);
             $category->description = $request->description;
-            dd($category->save());
             $saved  = $category->save();
             if($saved){
                 return response()->json([
